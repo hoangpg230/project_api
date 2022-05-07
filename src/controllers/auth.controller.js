@@ -9,14 +9,17 @@ const login = async (req, res, next) => {
 
     const user = await User.findOne({ email: result.email })
     if (!user) throw createError.NotFound('User not register')
+    
 
     const isMath = await user.isValidPassword(result.password)
     if (!isMath)
       throw createError.Unauthorized('Username/Password is not valid')
 
     const accessToken = await signAccessToken(user.id)
+    console.log(accessToken)
     const infoUser = user.toObject()
     delete infoUser.password
+    
     res.send({
       accessToken,
       user: infoUser,
