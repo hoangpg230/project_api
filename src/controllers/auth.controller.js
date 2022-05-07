@@ -15,9 +15,11 @@ const login = async (req, res, next) => {
       throw createError.Unauthorized('Username/Password is not valid')
 
     const accessToken = await signAccessToken(user.id)
-
+    const infoUser = user.toObject()
+    delete infoUser.password
     res.send({
       accessToken,
+      user: infoUser,
     })
   } catch (error) {
     if (error.isJoi === true)
